@@ -1,6 +1,6 @@
 # This is a test script to spin up a VPC on Amazon Web Services
 # CIDR IP Addresses will be hard coded here in the script as it is for testing purpose
-# Author: Vishwa Kurakundi (vgkurakundi@gmail.com)
+# Author: Vishwa Kurakundi
 
 import boto3
 
