@@ -188,9 +188,10 @@ for j in subnets:
 
 
 # Information
-print "\nFANTASTIC! \nYour custom VPC has now been created"
-print "\nHere are the details:"
+print """"\nFANTASTIC! \nYour custom VPC has now been created"
+\nHere are the details:"""
 print "\nRegion: " + vpcreg
 print "VPC Name: " + vpcname
 print "VPC CIDR Address: ", cidraddr
 print "Total Number of Subnet: ", no_of_sub
+print "\n"
