@@ -3,18 +3,49 @@
 # Author: Vishwa Kurakundi
 
 import boto3
+import sys
+from termcolor import *
 
 # This is a list that stores all the subnet Ids
 subnets = []
 
 # Basic information that will be displayed at the start
 
-print "\n\n*** READ THIS BEFORE YOU BEGIN ***\n"
-print "You will be asked to enter VPC name, CIDR range of your VPC and CIDR address of your Subnets, keep those handy, and DO NOT enter them incorrectly\n"
-print "Now that you have the details ready, go ahead and create your VPC! Happy VPCing ;-)\n\n"
+
+def nprint(msg):
+        print colored(msg, 'yellow')
+
+
+def readme():
+    nprint("""
+************ READ THIS BEFORE YOU BEGIN ************
+
+In order to spin a VPC on AWS, you will be needing the follwing details,
+before you move forward with this VPC creation. Here are the details you need:
+
+        1. AWS Region Name (Ex. us-east-1)
+        2. CIDR Address of the VPC (If you dont know how to select the CIDR range, refer documentation)
+        3. Number of Subnets you want in the VPC (you can even add/delete/modify subnets later on)
+        4. CIDR Address of the Subnets (If you dont know how to select the CIDR range, refer documentation)
+
+Now that you have these information handy, go ahaed and continue.
+
+Happy VPCing! ;-)
+    """)
+
+
+readme()
+
+print colored("\nNote: DO NOT ENTER ANY DATA INCORRECTLY, THIS SCRIPT CURRENTLY DOES NOT SUPPORT FORMAT-CHECKING\n", 'magenta')
+
+# Take Inputs at Once
+vpcreg = raw_input("Enter the AWS Region you want your VPC to be in (if you are not sure, enter us-east-1): ")
+cidraddr = raw_input("\n\nGreat, now enter the CIDR address of VPC: ")
+vpcname = raw_input("\nAlrighty, now enter the name of VPC :")
+
 
 # Ask for the region where they want to create VPC
-vpcreg = raw_input("Enter the AWS Region you want your VPC to be in (if you are not sure, enter us-east-1): ")
+### vpcreg = raw_input("Enter the AWS Region you want your VPC to be in (if you are not sure, enter us-east-1): ")
 
 # Connect to EC2 in region North California (us-west-1)
 ec2 = boto3.client('ec2', region_name=vpcreg)
@@ -28,7 +59,7 @@ for zone in az:
 
 
 # Takes the CIDR address of VPC
-cidraddr = raw_input("\n\nGreat, now enter the CIDR address of VPC: ")
+### cidraddr = raw_input("\n\nGreat, now enter the CIDR address of VPC: ")
 
 # Creates VPC with the entered CIDR
 vpc = ec2.create_vpc(
@@ -64,7 +95,7 @@ for i in range(no_of_sub):
     subId = vpcsubnet['Subnet']['SubnetId']
     subnets.append(subId)                               # Store all the Subnet IDs in list subnets
 
-    sub_name = raw_input("Enter the name of this subnet :")
+    sub_name = raw_input("\nEnter the name of this subnet :")
     subTag = ec2.create_tags(
         Resources=[subId],
         Tags=[
@@ -74,10 +105,10 @@ for i in range(no_of_sub):
         },
         ]
     )
-    print "Subnet " + sub_name + " created! With Subnet ID: " + subId
+    print "Subnet created! With Subnet ID: " + subId
 
 # Create Tags for your VPC
-vpcname = raw_input("\nAlrighty, now enter the name of VPC :")
+### vpcname = raw_input("\nAlrighty, now enter the name of VPC :")
 
 vpctag = ec2.create_tags(
     Resources=[vpcId],
